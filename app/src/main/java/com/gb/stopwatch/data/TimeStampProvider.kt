@@ -1,5 +1,5 @@
 package com.gb.stopwatch.data
 
-internal interface TimestampProvider {
+interface TimestampProvider {
     fun getMilliseconds(): Long
 }

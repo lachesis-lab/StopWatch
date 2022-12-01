@@ -10,6 +10,7 @@ import com.gb.stopwatch.data.DataSource
 import com.gb.stopwatch.data.StopwatchState
 import com.gb.stopwatch.data.TimeStampProviderImpl
 import com.gb.stopwatch.viewmodel.MainViewModel
+import com.gb.stopwatch.viewmodel.StopwatchListOrchestrator
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,34 +25,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 */
-    private val stopwatchListOrchestrator = StopwatchListOrchestrator(
-        StopwatchStateHolder(
-            StopwatchStateCalculator(
-                timestampProvider,
-                ElapsedTimeCalculator(timestampProvider)
-            ),
-            ElapsedTimeCalculator(timestampProvider),
-            TimestampMillisecondsFormatter()
-        ),
-        CoroutineScope(
-            Dispatchers.Main
-                    + SupervisorJob()
-        )
-    )
+//    private val stopwatchListOrchestrator = StopwatchListOrchestrator(
+//        StopwatchStateHolder(
+//            StopwatchStateCalculator(
+//                timestampProvider,
+//                ElapsedTimeCalculator(timestampProvider)
+//            ),
+//            ElapsedTimeCalculator(timestampProvider),
+//            TimestampMillisecondsFormatter()
+//        ),
+//        CoroutineScope(
+//            Dispatchers.Main
+//                    + SupervisorJob()
+//        )
+//    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val textView = findViewById<TextView>(R.id.text_time)
-        val viewModel: MainViewModel =
+        val buttonStart = findViewById<TextView>(R.id.button_start)
+        val buttonPause= findViewById<TextView>(R.id.button_pause)
+        val buttonStop = findViewById<TextView>(R.id.button_stop)
+        val viewModel: MainViewModel by lazy {
             ViewModelProvider(this).get(MainViewModel::class.java)
-
+        }
         viewModel.liveData.observe(
             this
-        ) {timeStamp ->
-            textView.text = timeStamp.data
+        ) { timeStamp ->
+            textView.text = timeStamp.toString()
         }
-        CoroutineScope(
+        buttonStart.setOnClickListener { viewModel.start() }
+        buttonPause.setOnClickListener { viewModel.pause() }
+        buttonStop.setOnClickListener { viewModel.stop() }
+    }
+
+
+}
+  /*      CoroutineScope(
             Dispatchers.Main
                     + SupervisorJob()
         ).launch {
@@ -72,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
-
+*/
 /*
 sealed class StopwatchState {
 
@@ -87,6 +98,7 @@ sealed class StopwatchState {
 }
 */
 
+/*
 interface TimestampProvider {
     fun getMilliseconds(): Long
 }
@@ -95,6 +107,8 @@ class StopwatchStateCalculator(
     private val timestampProvider: TimestampProvider,
     private val elapsedTimeCalculator: ElapsedTimeCalculator,
 ) {
+*/
+/*
 
     fun calculateRunningState(oldState: StopwatchState): StopwatchState.Running =
         when (oldState) {
@@ -230,3 +244,4 @@ class StopwatchListOrchestrator(
     }
 }
 
+*/
