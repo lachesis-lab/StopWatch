@@ -1,7 +1,5 @@
 package com.gb.stopwatch.data
 
-import kotlinx.coroutines.flow.Flow
-
 sealed class StopwatchState {
 
     data class Paused(
